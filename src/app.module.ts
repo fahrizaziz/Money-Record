@@ -31,6 +31,9 @@ import { HistoryModule } from './history/history.module';
           port: configService.get<number>('db.port'), 
           entities: [User, History], 
           synchronize: true,
+          ssl: {
+            rejectUnauthorized: false
+          }
         };
         return dbConfig;
       },
