@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: money_record_api
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=utl55lx7qc1hdbtqg4uq
+      - POSTGRES_PASSWORD=YfEZtFOIn6qy3o6DvWV3TRai22PDPO
+      - POSTGRES_DB=bb9z1qstrbeqouos1tad
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
