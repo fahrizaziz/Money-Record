@@ -1,11 +1,11 @@
-import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entity/user.entity'; // Adjust the path
+import { User } from '../entity/user.entity';
 import { Repository } from 'typeorm';
-import { Register } from '../dto/register'; // Adjust the path
+import { Register } from '../dto/register';
 import { format } from 'date-fns';
 import * as bcrypt from 'bcrypt';
-import { Login } from '../dto/login'; // Adjust the path
+import { Login } from '../dto/login';
 import { sign } from 'jsonwebtoken';
 
 const saltOrRounds = 10;

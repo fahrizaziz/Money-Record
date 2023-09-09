@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { format } from 'date-fns';
-import { AddHistory, Analisis, IncomeOutcome, HistoryDto, DeleteHistory, UpdateHistory } from 'src/dto/history';
-import { History } from 'src/entity/history.entity';
-import { User } from 'src/entity/user.entity';
+import { User } from '../entity/user.entity';
+import { History } from '../entity/history.entity';
 import { In, Like, Repository } from 'typeorm';
+import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
+import { format } from 'date-fns';
 
 @Injectable()
 export class HistoryService {

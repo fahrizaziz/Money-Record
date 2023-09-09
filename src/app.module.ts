@@ -2,15 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import config from './config/env';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConnectionOptions } from "typeorm";
+import { ConnectionOptions } from 'typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
-import { User } from './entity/user.entity';
-import { History } from './entity/history.entity';
 import { HistoryModule } from './history/history.module';
-import config from './config/env';
 
 @Module({
   imports: [
@@ -29,7 +27,7 @@ import config from './config/env';
           username: configService.get<string>('db.user'), 
           password: configService.get<string>('db.password'), 
           port: configService.get<number>('db.port'), 
-          entities: [User, History], 
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
           ssl: {
             rejectUnauthorized: false

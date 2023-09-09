@@ -1,8 +1,8 @@
-import { Body, Controller, Post, UseGuards, HttpStatus, Param, Get, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Body, UseGuards, HttpStatus, Post, Delete, Param, Patch } from '@nestjs/common';
 import { HistoryService } from './history.service';
-import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from 'src/dto/history';
 import { AuthGuard } from '@nestjs/passport';
-import { AnalisisResponse } from 'src/dto/analisis.response';
+import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
+import { AnalisisResponse } from '../dto/analisis.response';
 
 @Controller('history')
 export class HistoryController {

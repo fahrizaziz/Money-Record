@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { HistoryController } from './history.controller';
-import { History } from 'src/entity/history.entity';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { User } from 'src/entity/user.entity';
-import { JwtStrategy } from 'src/jwt/jwt.strategy';
+import { User } from '../entity/user.entity';
+import { History } from '../entity/history.entity';
+import { JwtStrategy } from '../jwt/jwt.strategy';
 
 @Module({
   imports: [
