@@ -276,4 +276,18 @@ export class HistoryService {
         await this.historyRepository.save(check)
         return true
     }
+
+    async findWhereDate(history: HistoryDto) {
+        const id_user = history.id_user
+        const date = history.date
+        const findDate = await this.historyRepository.find({
+            where: { id_user, date }
+        })
+
+        if (findDate.length > 0) {
+            return findDate
+        } else {
+            return;
+        }
+    }
 }

@@ -27,7 +27,6 @@ export class HistoryDto {
 export class DeleteHistory {
     id_history: number
 }
-
 export class UpdateHistory {
     id_user: number;
     type: string;
