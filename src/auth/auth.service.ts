@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@n
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
-import { Register } from 'src/dto/register';
+import { Register } from '../dto/register';
 import { format } from 'date-fns';
 import * as bcrypt from 'bcrypt';
 import { Login } from 'src/dto/login';
