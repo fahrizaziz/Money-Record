@@ -10,7 +10,7 @@ async function bootstrap() {
     .setTitle('Money Record')
     .setDescription('Money Record API')
     .setVersion('1.0')
-    .addTag('Money')
+    .addTag('')
     .build()
   const document = SwaggerModule.createDocument(app, config);
 
