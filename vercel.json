@@ -22,5 +22,6 @@
                 "DELETE"
             ]
         }
-    ]
+    ],
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
