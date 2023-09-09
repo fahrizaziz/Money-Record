@@ -8,7 +8,7 @@
     ],
     "routes": [
         {
-            "src": "/dto(.*)",
+            "src": "/dto/(.*)",
             "dest": "src/main.ts"
         },
         {
