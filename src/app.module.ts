@@ -10,8 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './entity/user.entity';
 import { History } from './entity/history.entity';
 import { HistoryModule } from './history/history.module';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import config from './config/env';
 
 @Module({
   imports: [
@@ -20,16 +19,16 @@ dotenv.config();
       signOptions: { expiresIn: '14h' },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    ConfigModule.forRoot({ envFilePath: ['.env'], isGlobal: true }),
+    ConfigModule.forRoot({ load: [config], isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const dbConfig: ConnectionOptions = {
           type: 'postgres', 
-          host: configService.get<string>('POSTGRES_HOST'), 
-          database: configService.get<string>('POSTGRES_DATABASE'), 
-          username: configService.get<string>('POSTGRES_USER'), 
-          password: configService.get<string>('POSTGRES_PASSWORD'), 
-          port: configService.get<number>('POSTGRES_PORT'), 
+          host: configService.get<string>('db.host'), 
+          database: configService.get<string>('db.name'), 
+          username: configService.get<string>('db.user'), 
+          password: configService.get<string>('db.password'), 
+          port: configService.get<number>('db.port'), 
           entities: [User, History], 
           synchronize: true,
           ssl: {
