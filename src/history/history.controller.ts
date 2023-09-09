@@ -3,8 +3,10 @@ import { HistoryService } from './history.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { AnalisisResponse } from '../dto/analisis.response';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('history')
+@ApiTags('History')
 export class HistoryController {
     constructor(private readonly historyService: HistoryService) {}
 
