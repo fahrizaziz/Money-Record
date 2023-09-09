@@ -8,10 +8,6 @@
     ],
     "routes": [
         {
-            "src": "/dto/(.*)",
-            "dest": "main.ts"
-        },
-        {
             "src": "/(.*)",
             "dest": "main.ts",
             "methods": [
