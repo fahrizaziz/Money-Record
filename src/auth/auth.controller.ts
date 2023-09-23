@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { Register } from '../dto/register';
 import { Login } from '../dto/login';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -81,7 +82,7 @@ export class AuthController {
             }
         }
     } })
-    async login(@Body() login: Login, @Res() res) {
+    async login(@Body() login: Login, @Res() res: Response) {
         return await this.authService.loginUser(login, res);
     }
 

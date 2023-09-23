@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import * as bcrypt from 'bcrypt';
 import { Login } from '../dto/login';
 import { sign } from 'jsonwebtoken';
-import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 const saltOrRounds = 10;
 
@@ -15,47 +15,36 @@ const saltOrRounds = 10;
 export class AuthService {
     constructor(
         @InjectRepository(User) 
-        private readonly userRepository: Repository<User>,
-        private readonly jwtService: JwtService,
+        private readonly userRepository: Repository<User>
     ) {}
 
-    async loginUser(login: Login, @Res() res) {
+    async loginUser(login: Login, @Res() res: Response) {
         const user = await this.userRepository.find({ where: { email: login.email } });
 
         if (user.length === 0) {
+            // throw new  HttpException('Email tidak ditemukan', HttpStatus.BAD_REQUEST);
             const response = {
                 meta: {
                     code: 400,
-                    status: 'error',
-                    message: 'Authentication Failed'
+                    status: "Error",
+                    message: "Authentication Failed"
                 },
                 data: {
-                    message: 'Email tidak ditemukan'
+                    message: "Email tidak ditemukan"
                 }
             }
-            res.status(400).send(response)
+            return res.status(400).send(response)
         }
         const resultUser = user[0];
         const isPasswordValid = await this.comparePassword(login.password, resultUser.password)
 
         if (!isPasswordValid) {
-            const response = {
-                meta: {
-                    code: 400,
-                    status: 'error',
-                    message: 'Authentication Failed'
-                },
-                data: {
-                    message: 'Password tidak cocok'
-                }
-            }
-            res.status(400).send(response)
+            throw new  HttpException('Password tidak cocok', HttpStatus.BAD_REQUEST);
         }
         const userId = resultUser.id_user;
-        // const token = sign({ userId }, '82CEBC4F2F22A1EF33C85FA33542A', {
-        //     expiresIn: '14h'
-        // })
-        const token = this.jwtService.sign({ userId })
+        const token = sign({ userId }, '82CEBC4F2F22A1EF33C85FA33542A', {
+            expiresIn: '14h'
+        })
         return token;
     }
 
