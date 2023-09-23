@@ -1,14 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class Register {
-    @ApiProperty()
+    @ApiProperty({default: 'aziz@gmail.com'})
     email: string;
-    @ApiProperty()
+    @ApiProperty({default: 'aziz02100'})
     password: string;
-    @ApiProperty()
+    @ApiProperty({default: 'aziz'})
     name: string;
-    @ApiProperty()
     created_at: Date;
-    @ApiProperty()
     updated_at: Date;
 }

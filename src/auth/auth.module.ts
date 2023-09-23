@@ -8,11 +8,19 @@ import { User } from '../entity/user.entity';
 
 @Module({
     imports: [
-      JwtModule.register({
-        secret: '82CEBC4F2F22A1EF33C85FA33542A',
-        signOptions: { expiresIn: '14h' },
+      // JwtModule.register({
+      //   secret: '82CEBC4F2F22A1EF33C85FA33542A',
+      //   signOptions: { expiresIn: '14h' },
+      // }),
+      JwtModule.registerAsync({
+        useFactory: () => ({
+          secret: process.env.JWT_SECRET,
+          signOptions: {
+            expiresIn: '900s',
+          },
+        }),
       }),
-      PassportModule.register({ defaultStrategy: 'jwt' }),
+      PassportModule,
       TypeOrmModule.forFeature([User]),
     ],
     providers: [AuthService],
