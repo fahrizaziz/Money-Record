@@ -3,15 +3,81 @@ import { HistoryService } from './history.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { AnalisisResponse } from '../dto/analisis.response';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('history')
 @ApiTags('History')
+@ApiBearerAuth()
 export class HistoryController {
     constructor(private readonly historyService: HistoryService) {}
 
     @Post('/add')
     @UseGuards(AuthGuard())
+    @ApiCreatedResponse({ status: 201, schema: {
+      type: 'object',
+        properties: {
+          meta: {
+            type: 'object',
+            properties: {
+              code: {
+                type: 'integer',
+                description: 'HTTP Response Status',
+                example: '201'
+              },
+              status: {
+                type: 'string',
+                description: 'Status',
+                example: 'Success'
+              },
+              message: {
+                type: 'string',
+                description: 'Message',
+                example: 'Successfully Added Data'
+              },
+            }
+          },
+          data: {
+            type: 'object',
+            properties: {
+              id_user: {
+                type: 'number',
+                description: 'Id User',
+                example: '1'
+              },
+              type: {
+                type: 'number',
+                description: 'Saving Type',
+                example: 'Pemasukan'
+              },
+              date: {
+                type: 'string',
+                description: 'Saving Date',
+                example: '2023-08-21'
+              },
+              total: {
+                type: 'string',
+                description: 'Saving Amount',
+                example: '10.000'
+              },
+              details: {
+                type: 'string',
+                description: 'Saving Information',
+                example: 'esteh'
+              },
+              created_at: {
+                type: 'date',
+                description: 'Date Created to database',
+                example: '2023-09-23T01:08:12.300'
+              },
+              updated_at: {
+                type: 'string',
+                description: 'Update Date to the database',
+                example: '2023-09-23T01:08:12.300'
+              },
+            }
+          }
+        },
+    } })
     async add(@Body() addhistory: AddHistory) {
         return await this.historyService.addHistory(addhistory);
     }

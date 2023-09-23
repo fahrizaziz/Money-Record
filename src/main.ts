@@ -11,6 +11,7 @@ async function bootstrap() {
     .setDescription('Money Record API')
     .setVersion('1.0')
     .addTag('')
+    .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, config);
 
