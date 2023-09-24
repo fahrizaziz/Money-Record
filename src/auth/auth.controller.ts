@@ -2,7 +2,7 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Register } from '../dto/register';
 import { Login } from '../dto/login';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -12,7 +12,7 @@ export class AuthController {
 
     @Post('/login')
     @ApiOperation({ summary: 'Login to Apps from this api' })
-    @ApiCreatedResponse({ status: 201, schema: {
+    @ApiResponse({ status: 201, schema: {
         type: 'object',
         properties: {
             meta: {
@@ -82,13 +82,51 @@ export class AuthController {
             }
         }
     } })
+    @ApiResponse({
+        status: 400,
+        schema: {
+            type: 'object',
+            properties: {
+                meta: {
+                    type: 'object',
+                    properties: {
+                        code: {
+                            type: 'integer',
+                            description: 'HTTP Response Status',
+                            example: '400'
+                          },
+                          status: {
+                            type: 'string',
+                            description: 'Status',
+                            example: 'Error'
+                          },
+                          message: {
+                            type: 'string',
+                            description: 'Message',
+                            example: 'Authentication Failed'
+                          },
+                    }
+                },
+                data: {
+                    type: 'object',
+                    properties: {
+                        message: {
+                            type: 'string',
+                            description: 'Response Message',
+                            example: 'Email tidak ditemukan'
+                        }
+                    }
+                }
+            }
+        },
+    })
     async login(@Body() login: Login, @Res() res: Response) {
         return await this.authService.loginUser(login, res);
     }
 
     @Post('/register')
     @ApiOperation({ summary: 'Register to join Apps from this api' })
-    @ApiCreatedResponse({ status: 201, schema: {
+    @ApiResponse({ status: 201, schema: {
         type: 'object',
         properties: {
             meta: {
@@ -148,7 +186,45 @@ export class AuthController {
             }
         }
     } })
-    async register(@Body() register: Register) {
-        return await this.authService.registerUser(register);
+    @ApiResponse({
+        status: 400,
+        schema: {
+            type: 'object',
+            properties: {
+                meta: {
+                    type: 'object',
+                    properties: {
+                        code: {
+                            type: 'integer',
+                            description: 'HTTP Response Status',
+                            example: '400'
+                          },
+                          status: {
+                            type: 'string',
+                            description: 'Status',
+                            example: 'Error'
+                          },
+                          message: {
+                            type: 'string',
+                            description: 'Message',
+                            example: 'Authentication Failed'
+                          },
+                    }
+                },
+                data: {
+                    type: 'object',
+                    properties: {
+                        message: {
+                            type: 'string',
+                            description: 'Response Message',
+                            example: 'Email already exists'
+                        }
+                    }
+                }
+            }
+        },
+    })
+    async register(@Body() register: Register, @Res() res: Response) {
+        return await this.authService.registerUser(register, res);
     }
 }

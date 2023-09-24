@@ -24,7 +24,6 @@ export class AuthService {
         const user = await this.userRepository.find({ where: { email: login.email } });
 
         if (user.length === 0) {
-            // throw new  HttpException('Email tidak ditemukan', HttpStatus.BAD_REQUEST);
             const response = {
                 meta: {
                     code: 400,
@@ -41,13 +40,23 @@ export class AuthService {
         const isPasswordValid = await this.comparePassword(login.password, resultUser.password)
 
         if (!isPasswordValid) {
-            throw new  HttpException('Password tidak cocok', HttpStatus.BAD_REQUEST);
+            const response = {
+                meta: {
+                    code: 400,
+                    status: "Error",
+                    message: "Authentication Failed"
+                },
+                data: {
+                    message: "Password tidak cocok"
+                }
+            }
+            return res.status(400).send(response)
         }
         const userId = resultUser.id_user;
         const token = this.jwtService.sign({ userId })
         const response = {
             meta: {
-                code: 200,
+                code: 201,
                 status: "Success",
                 message: "Authenticated"
             },
@@ -63,10 +72,10 @@ export class AuthService {
                 }
             }
         }
-        return res.status(200).send(response);
+        return res.status(201).send(response);
     }
 
-    async registerUser(register: Register) {
+    async registerUser(register: Register, @Res() res: Response) {
       const currentDate = new Date();
       const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
       const hashedPassword = await bcrypt.hash(register.password, saltOrRounds);
@@ -77,7 +86,18 @@ export class AuthService {
       });
 
       if (checkEmail.length > 0) {
-        throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+        const response = {
+            meta: {
+                code: 400,
+                status: "Error",
+                message: "Authentication Failed"
+            },
+            data: {
+                message: "Email already exists"
+            }
+        }
+        return res.status(400).send(response)
+        
       }
       const newUser = new User()
       newUser.email = register.email
@@ -86,7 +106,23 @@ export class AuthService {
       newUser.created_at = formattedDate
       newUser.updated_at = formattedDate
       const result = await this.userRepository.save(newUser);
-      console.log(result);
+      const response = {
+        meta: {
+            code: 201,
+            status: "Success",
+            message: "Authenticated"
+        },
+        data: {
+            user: {
+                id: result.id_user,
+                name: result.name,
+                email: result.email,
+                created_at: result.created_at,
+                updated_at: result.updated_at
+            }
+        }
+    }
+    return res.status(201).send(response);
     }
 
     async comparePassword(password: string, cpassword: string): Promise<string> {
