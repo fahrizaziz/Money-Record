@@ -1,10 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { History } from '../entity/history.entity';
 import { In, Like, Repository } from 'typeorm';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { format } from 'date-fns';
+import { Response } from 'express';
+import { AnalisisResponse } from '../dto/analisis.response';
 
 @Injectable()
 export class HistoryService {
@@ -15,7 +17,7 @@ export class HistoryService {
         private readonly userRepository: Repository<User>
     ) {}
 
-    async analysis(history: Analisis) {
+    async analysis(history: Analisis, @Res() res: Response) {
         const id_user = history.id_user;
         console.log(id_user)
         const today = new Date(history.today);
@@ -75,13 +77,15 @@ export class HistoryService {
                     }
                 })
             } else {
-                return {
-                    meta: {
-                        code: HttpStatus.OK,
-                        status: 'success',
-                        message: 'Authenticated'
-                    },
-                    data: {
+                const responseAnalisis: AnalisisResponse = new AnalisisResponse()
+                responseAnalisis.meta = {}
+                responseAnalisis.meta.code = 201
+                responseAnalisis.meta.status = 'Success',
+                responseAnalisis.meta.message = 'Data Analisis'
+
+                responseAnalisis.data = {}
+                responseAnalisis.data.data = [
+                    {
                         today: weekly[6],
                         yesterday: weekly[5],
                         week: weekly,
@@ -89,8 +93,10 @@ export class HistoryService {
                             income: month_income,
                             outcome: month_outcome
                         }
-                    },
-                };
+                    }
+                ]
+
+                return res.status(201).send(responseAnalisis)
             }
 
             const weekHistory = await this.historyRepository.find({
@@ -114,22 +120,26 @@ export class HistoryService {
                 })
             }
 
-            return {
-                meta: {
-                    code: HttpStatus.OK,
-                    status: 'success',
-                    message: 'Authenticated'
-                  },
-                  data: {
-                      today: weekly[6],
-                yesterday: weekly[5],
-                week: weekly,
-                month: {
-                    income: month_income,
-                    outcome: month_outcome
-                }
-                  }, 
-            };
+            const responseAnalisis: AnalisisResponse = new AnalisisResponse()
+                responseAnalisis.meta = {}
+                responseAnalisis.meta.code = 201
+                responseAnalisis.meta.status = 'Success',
+                responseAnalisis.meta.message = 'Data Analisis'
+
+                responseAnalisis.data = {}
+                responseAnalisis.data.data = [
+                    {
+                        today: weekly[6],
+                        yesterday: weekly[5],
+                        week: weekly,
+                        month: {
+                            income: month_income,
+                            outcome: month_outcome
+                        }
+                    }
+                ]
+
+                return res.status(201).send(responseAnalisis)
     }
 
     async addHistory(history: AddHistory) {

@@ -1,15 +1,19 @@
-export interface AnalisisResponse {
-    meta : Meta;
-    data: Data;
+export class AnalisisResponse {
+    meta?: Meta;
+    data?: Data;
 }
 
-export interface Meta {
+export class Meta {
     code?: number;
     status?: string;
-    message: string;
+    message?: string;
 }
 
-export interface Data {
+export class Data {
+    data?: DataAnalisis[]
+}
+
+export class DataAnalisis {
     today?: number;
     yesterday?: number;
     week?: number[];
@@ -17,7 +21,7 @@ export interface Data {
     message?: string;
 }
 
-export interface Month {
-    income: number;
-    outcome: number;
+export class Month {
+    income?: number;
+    outcome?: number;
 }

@@ -1,10 +1,11 @@
-import { Controller, Get, Body, UseGuards, HttpStatus, Post, Delete, Param, Patch } from '@nestjs/common';
+import { Controller, Get, Body, UseGuards, HttpStatus, Post, Delete, Param, Patch, Res } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { AnalisisResponse } from '../dto/analisis.response';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guards';
+import { Response } from 'express';
 
 @Controller('history')
 @ApiTags('History')
@@ -85,22 +86,112 @@ export class HistoryController {
 
     @Get('/analisis')
     @UseGuards(JwtAuthGuard)
-    async analisis(@Body() history: Analisis): Promise<AnalisisResponse> {
-          try {
-              const result = await this.historyService.analysis(history);
-              return result;
-            } catch (error) {
-              return {
-                meta: {
-                  code: HttpStatus.INTERNAL_SERVER_ERROR,
-                  status: 'error',
-                  message: error.message,
-                },
-                data: {
-                  message: error.message,
-                },
-              }
+    @ApiResponse({ status: 201, schema: {
+      type: 'object',
+        properties: {
+          meta: {
+            type: 'object',
+            properties: {
+              code: {
+                type: 'integer',
+                description: 'HTTP Response Status',
+                example: '201'
+              },
+              status: {
+                type: 'string',
+                description: 'Status',
+                example: 'Success'
+              },
+              message: {
+                type: 'string',
+                description: 'Message',
+                example: 'Data Analisis'
+              },
             }
+          },
+          data: {
+              type: 'object',
+              properties: {
+                data: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties : {
+                      today: {
+                        type: 'integer',
+                        description : 'Saving Money Today',
+                        example : '0'
+                      },
+                      yesterday: {
+                        type: 'integer',
+                        description : 'Saving Money Yesterday',
+                        example : '0'
+                      },
+                      week: {
+                        type: 'array',
+                        items: {
+                          description: 'Saving Money Weekly',
+                          example: '0'
+                        }
+                      },
+                      month: {
+                        type: 'object',
+                        properties: {
+                          income: {
+                            type: 'integer',
+                            description: 'Income in Month',
+                            example: 10
+                          },
+                          outcome: {
+                            type: 'integer',
+                            description: 'Income in outcome',
+                            example: 0
+                          },
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+             }
+        },
+    } })
+    @ApiResponse({ status: 400, schema: {
+      type: 'object',
+        properties: {
+          meta: {
+            type: 'object',
+            properties: {
+              code: {
+                type: 'integer',
+                description: 'HTTP Response Status',
+                example: '400'
+              },
+              status: {
+                type: 'string',
+                description: 'Status',
+                example: 'Failed'
+              },
+              message: {
+                type: 'string',
+                description: 'Message',
+                example: 'Failed Data Analisis'
+              },
+            }
+          },
+          data: {
+              type: 'object',
+              properties: {
+                data: {
+                  type: 'array',
+                  example: []
+                }
+              }
+             }
+        },
+    } })
+    async analisis(@Body() history: Analisis, @Res() res: Response) {
+        return await this.historyService.analysis(history, res)
     }
 
     @Get('/inoutcome')
