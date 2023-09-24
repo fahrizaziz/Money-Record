@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { Login } from '../dto/login';
 import { sign } from 'jsonwebtoken';
 import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 const saltOrRounds = 10;
 
@@ -15,7 +16,8 @@ const saltOrRounds = 10;
 export class AuthService {
     constructor(
         @InjectRepository(User) 
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private readonly jwtService: JwtService,
     ) {}
 
     async loginUser(login: Login, @Res() res: Response) {
@@ -42,10 +44,26 @@ export class AuthService {
             throw new  HttpException('Password tidak cocok', HttpStatus.BAD_REQUEST);
         }
         const userId = resultUser.id_user;
-        const token = sign({ userId }, '82CEBC4F2F22A1EF33C85FA33542A', {
-            expiresIn: '14h'
-        })
-        return token;
+        const token = this.jwtService.sign({ userId })
+        const response = {
+            meta: {
+                code: 200,
+                status: "Success",
+                message: "Authenticated"
+            },
+            data: {
+                access_token: token,
+                token_type: 'Bearer',
+                user: {
+                    id: resultUser.id_user,
+                    name: resultUser.name,
+                    email: resultUser.email,
+                    created_at: resultUser.created_at,
+                    updated_at: resultUser.updated_at
+                }
+            }
+        }
+        return res.status(200).send(response);
     }
 
     async registerUser(register: Register) {

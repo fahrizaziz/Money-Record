@@ -12,11 +12,11 @@ import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: '82CEBC4F2F22A1EF33C85FA33542A',
-      signOptions: { expiresIn: '14h' },
-    }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    // JwtModule.register({
+    //   secret: '82CEBC4F2F22A1EF33C85FA33542A',
+    //   signOptions: { expiresIn: '14h' },
+    // }),
+    // PassportModule.register({ defaultStrategy: 'jwt' }),
     ConfigModule.forRoot({ load: [config], isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {

@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { AnalisisResponse } from '../dto/analisis.response';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guards';
 
 @Controller('history')
 @ApiTags('History')
@@ -12,7 +13,7 @@ export class HistoryController {
     constructor(private readonly historyService: HistoryService) {}
 
     @Post('/add')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     @ApiCreatedResponse({ status: 201, schema: {
       type: 'object',
         properties: {
@@ -83,7 +84,7 @@ export class HistoryController {
     }
 
     @Get('/analisis')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async analisis(@Body() history: Analisis): Promise<AnalisisResponse> {
           try {
               const result = await this.historyService.analysis(history);
@@ -103,49 +104,49 @@ export class HistoryController {
     }
 
     @Get('/inoutcome')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async inOutCome(@Body() history: IncomeOutcome) {
       return await this.historyService.inOutCome(history);
     }
 
     @Post('/searchinoutcome/:id_user/:type/:date')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async inOutComeSearch(@Param() history: IncomeOutcome) {
       return await this.historyService.inOutComeSearch(history);
     }
 
     @Get('/historys')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async history(@Body() histores: HistoryDto) {
       return await this.historyService.history(histores)
     }
 
     @Post('/historysearch/:id_user/:date')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async historySearch(@Param() histores: HistoryDto) {
       return await this.historyService.historySearch(histores)
     }
 
     @Delete('/delete/:id_history')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async historyDelete(@Param() history: DeleteHistory) {
       return await this.historyService.DeleteHistory(history)
     }
 
     @Post('/detail/:id_user/:date/:type')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async detailHistory(@Param() history: IncomeOutcome) {
       return await this.historyService.detailHistory(history)
     }
     
     @Patch('/update/:id_history')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async updateHistory(@Param('id_history') id_history: number, @Body() updateHistory: UpdateHistory) {
         return await this.historyService.updateHistory(id_history, updateHistory);
     }
 
     @Post('/finddate/:id_user/:date')
-    @UseGuards(AuthGuard())
+    @UseGuards(JwtAuthGuard)
     async findWhereDate(@Param() histores: HistoryDto) {
       return await this.historyService.findWhereDate(histores);
     }
