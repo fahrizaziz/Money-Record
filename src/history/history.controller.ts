@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateHistory } from '../dto/history';
 import { AnalisisResponse } from '../dto/analisis.response';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/jwt/jwt-auth.guards';
+import { JwtAuthGuard } from '../jwt/jwt-auth.guards';
 
 @Controller('history')
 @ApiTags('History')
