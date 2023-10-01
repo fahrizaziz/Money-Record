@@ -7,7 +7,7 @@ import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateH
 import { format } from 'date-fns';
 import { Response } from 'express';
 import { AnalisisResponse } from '../dto/analisis.response';
-import { InOutComeResponse } from 'src/dto/inoutcome.response';
+import { InOutComeResponse } from '../dto/inoutcome.response';
 
 @Injectable()
 export class HistoryService {
