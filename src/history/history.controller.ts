@@ -196,8 +196,110 @@ export class HistoryController {
 
     @Get('/inoutcome')
     @UseGuards(JwtAuthGuard)
-    async inOutCome(@Body() history: IncomeOutcome) {
-      return await this.historyService.inOutCome(history);
+    @ApiResponse({ status: 201, schema: {
+      type: 'object',
+        properties: {
+          meta: {
+            type: 'object',
+            properties: {
+              code: {
+                type: 'integer',
+                description: 'HTTP Response Status',
+                example: '201'
+              },
+              status: {
+                type: 'string',
+                description: 'Status',
+                example: 'Success'
+              },
+              message: {
+                type: 'string',
+                description: 'Message',
+                example: 'Data Analisis'
+              },
+            }
+          },
+          data: {
+              type: 'object',
+              properties: {
+                data: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties : {
+                      id_history: {
+                        type: 'number',
+                        description : 'Id History',
+                        example : 1
+                      },
+                      id_user: {
+                        type: 'number',
+                        description : 'Id User',
+                        example : 1
+                      },
+                      type: {
+                        type: 'string',
+                        description : 'Type of In Out Come',
+                        example : "Pemasukan"
+                      },
+                      date: {
+                        type: 'string',
+                        description : 'Date In Out Come',
+                        example : "2023-08-21"
+                      },
+                      total: {
+                        type: 'string',
+                        description : 'Total of In Out Come',
+                        example : "10.000"
+                      },
+                      details: {
+                        type: 'string',
+                        description : 'Description of In Out Come',
+                        example : "esteh"
+                      },
+                    }
+                  }
+                }
+              }
+             }
+        },
+    } })
+    @ApiResponse({ status: 400, schema: {
+      type: 'object',
+        properties: {
+          meta: {
+            type: 'object',
+            properties: {
+              code: {
+                type: 'integer',
+                description: 'HTTP Response Status',
+                example: '400'
+              },
+              status: {
+                type: 'string',
+                description: 'Status',
+                example: 'Failed'
+              },
+              message: {
+                type: 'string',
+                description: 'Message',
+                example: 'Failed Data Analisis'
+              },
+            }
+          },
+          data: {
+              type: 'object',
+              properties: {
+                data: {
+                  type: 'array',
+                  example: []
+                }
+              }
+             }
+        },
+    } })
+    async inOutCome(@Body() history: IncomeOutcome, @Res() res: Response) {
+      return await this.historyService.inOutCome(history, res);
     }
 
     @Post('/searchinoutcome/:id_user/:type/:date')

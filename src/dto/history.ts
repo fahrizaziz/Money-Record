@@ -5,7 +5,6 @@ export class IncomeOutcome {
     id_user: number
     @ApiProperty()
     type: string
-    @ApiProperty()
     date: string
 }
 

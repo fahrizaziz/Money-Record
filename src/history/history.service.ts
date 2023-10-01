@@ -7,6 +7,7 @@ import { AddHistory, Analisis, DeleteHistory, HistoryDto, IncomeOutcome, UpdateH
 import { format } from 'date-fns';
 import { Response } from 'express';
 import { AnalisisResponse } from '../dto/analisis.response';
+import { InOutComeResponse } from 'src/dto/inoutcome.response';
 
 @Injectable()
 export class HistoryService {
@@ -65,7 +66,6 @@ export class HistoryService {
                 },
                 order: { date: 'DESC' },
             });
-            console.log(monthHistory)
 
             if (monthHistory.length > 0) {
                 monthHistory.forEach((row_month: any) => {
@@ -76,7 +76,6 @@ export class HistoryService {
                         month_outcome += parseFloat(row_month.total);
                     }
                 })
-            } else {
                 const responseAnalisis: AnalisisResponse = new AnalisisResponse()
                 responseAnalisis.meta = {}
                 responseAnalisis.meta.code = 201
@@ -118,9 +117,7 @@ export class HistoryService {
                         }
                     }
                 })
-            }
-
-            const responseAnalisis: AnalisisResponse = new AnalisisResponse()
+                const responseAnalisis: AnalisisResponse = new AnalisisResponse()
                 responseAnalisis.meta = {}
                 responseAnalisis.meta.code = 201
                 responseAnalisis.meta.status = 'Success',
@@ -140,6 +137,17 @@ export class HistoryService {
                 ]
 
                 return res.status(201).send(responseAnalisis)
+            }
+
+            const responseInOutCome: InOutComeResponse = new InOutComeResponse()
+            responseInOutCome.meta = {}
+            responseInOutCome.meta.code = 400
+            responseInOutCome.meta.status = 'Failed',
+            responseInOutCome.meta.message = 'Failed Data Analisis'
+
+            responseInOutCome.data = {}
+            responseInOutCome.data.data = []
+            return res.status(400).send(responseInOutCome)  
     }
 
     async addHistory(history: AddHistory) {
@@ -182,14 +190,44 @@ export class HistoryService {
        return result;
     }
 
-    async inOutCome(history: IncomeOutcome) {
+    async inOutCome(history: IncomeOutcome, @Res() res: Response) {
         const id_user = history.id_user
         const type = history.type
         const inoutCome =  await this.historyRepository.find({
             where: { id_user, type },
             order: {date: 'DESC'}
         })
-        return inoutCome
+        if (inoutCome.length > 0) {
+            const responseInOutCome: InOutComeResponse = new InOutComeResponse()
+            responseInOutCome.meta = {}
+        responseInOutCome.meta.code = 201
+        responseInOutCome.meta.status = 'Success',
+        responseInOutCome.meta.message = 'Data Analisis'
+
+        responseInOutCome.data = {}
+        responseInOutCome.data.data = [
+            {
+                id_history: inoutCome[0].id_history,
+                id_user: inoutCome[0].id_user,
+                type: inoutCome[0].type,
+                date: inoutCome[0].date,
+                total: inoutCome[0].total,
+                details: inoutCome[0].details
+            }
+        ]
+        
+        return res.status(201).send(responseInOutCome)
+        } else {
+            const responseInOutCome: InOutComeResponse = new InOutComeResponse()
+            responseInOutCome.meta = {}
+            responseInOutCome.meta.code = 400
+            responseInOutCome.meta.status = 'Failed',
+            responseInOutCome.meta.message = 'Failed Data Analisis'
+
+            responseInOutCome.data = {}
+            responseInOutCome.data.data = []
+            return res.status(400).send(responseInOutCome)
+        }
     }
     
     async inOutComeSearch(history: IncomeOutcome) {
