@@ -78,7 +78,7 @@ export class HistoryService {
                 })
                 const responseAnalisis: AnalisisResponse = new AnalisisResponse()
                 responseAnalisis.meta = {}
-                responseAnalisis.meta.code = 201
+                responseAnalisis.meta.code = 200
                 responseAnalisis.meta.status = 'Success',
                 responseAnalisis.meta.message = 'Data Analisis'
 
@@ -95,7 +95,7 @@ export class HistoryService {
                     }
                 ]
 
-                return res.status(201).send(responseAnalisis)
+                return res.status(200).send(responseAnalisis)
             }
 
             const weekHistory = await this.historyRepository.find({
@@ -119,7 +119,7 @@ export class HistoryService {
                 })
                 const responseAnalisis: AnalisisResponse = new AnalisisResponse()
                 responseAnalisis.meta = {}
-                responseAnalisis.meta.code = 201
+                responseAnalisis.meta.code = 200
                 responseAnalisis.meta.status = 'Success',
                 responseAnalisis.meta.message = 'Data Analisis'
 
@@ -136,7 +136,7 @@ export class HistoryService {
                     }
                 ]
 
-                return res.status(201).send(responseAnalisis)
+                return res.status(200).send(responseAnalisis)
             }
 
             const responseInOutCome: InOutComeResponse = new InOutComeResponse()
@@ -200,7 +200,7 @@ export class HistoryService {
         if (inoutCome.length > 0) {
             const responseInOutCome: InOutComeResponse = new InOutComeResponse()
             responseInOutCome.meta = {}
-        responseInOutCome.meta.code = 201
+        responseInOutCome.meta.code = 200
         responseInOutCome.meta.status = 'Success',
         responseInOutCome.meta.message = 'Data Analisis'
 
@@ -216,7 +216,7 @@ export class HistoryService {
             }
         ]
         
-        return res.status(201).send(responseInOutCome)
+        return res.status(200).send(responseInOutCome)
         } else {
             const responseInOutCome: InOutComeResponse = new InOutComeResponse()
             responseInOutCome.meta = {}

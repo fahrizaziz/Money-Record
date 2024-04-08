@@ -15,7 +15,7 @@ export class HistoryController {
 
     @Post('/add')
     @UseGuards(JwtAuthGuard)
-    @ApiCreatedResponse({ status: 201, schema: {
+    @ApiCreatedResponse({ status: 200, schema: {
       type: 'object',
         properties: {
           meta: {
@@ -24,7 +24,7 @@ export class HistoryController {
               code: {
                 type: 'integer',
                 description: 'HTTP Response Status',
-                example: '201'
+                example: '200'
               },
               status: {
                 type: 'string',
@@ -86,7 +86,7 @@ export class HistoryController {
 
     @Get('/analisis')
     @UseGuards(JwtAuthGuard)
-    @ApiResponse({ status: 201, schema: {
+    @ApiResponse({ status: 200, schema: {
       type: 'object',
         properties: {
           meta: {
@@ -95,7 +95,7 @@ export class HistoryController {
               code: {
                 type: 'integer',
                 description: 'HTTP Response Status',
-                example: '201'
+                example: '200'
               },
               status: {
                 type: 'string',
@@ -196,7 +196,7 @@ export class HistoryController {
 
     @Get('/inoutcome')
     @UseGuards(JwtAuthGuard)
-    @ApiResponse({ status: 201, schema: {
+    @ApiResponse({ status: 200, schema: {
       type: 'object',
         properties: {
           meta: {
@@ -205,7 +205,7 @@ export class HistoryController {
               code: {
                 type: 'integer',
                 description: 'HTTP Response Status',
-                example: '201'
+                example: '200'
               },
               status: {
                 type: 'string',
