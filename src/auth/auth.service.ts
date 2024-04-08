@@ -56,7 +56,7 @@ export class AuthService {
         const token = this.jwtService.sign({ userId })
         const response = {
             meta: {
-                code: 200,
+                code: 201,
                 status: "Success",
                 message: "Authenticated"
             },
@@ -72,7 +72,7 @@ export class AuthService {
                 }
             }
         }
-        return res.status(200).send(response);
+        return res.status(201).send(response);
     }
 
     async registerUser(register: Register, @Res() res: Response) {
@@ -108,7 +108,7 @@ export class AuthService {
       const result = await this.userRepository.save(newUser);
       const response = {
         meta: {
-            code: 200,
+            code: 201,
             status: "Success",
             message: "Authenticated"
         },
@@ -122,7 +122,7 @@ export class AuthService {
             }
         }
     }
-    return res.status(200).send(response);
+    return res.status(201).send(response);
     }
 
     async comparePassword(password: string, cpassword: string): Promise<string> {

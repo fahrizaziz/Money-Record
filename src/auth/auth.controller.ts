@@ -12,7 +12,7 @@ export class AuthController {
 
     @Post('/login')
     @ApiOperation({ summary: 'Login to Apps from this api' })
-    @ApiResponse({ status: 200, schema: {
+    @ApiResponse({ status: 201, schema: {
         type: 'object',
         properties: {
             meta: {
@@ -21,7 +21,7 @@ export class AuthController {
                     code: {
                         type: 'integer',
                         description: 'HTTP Response Status',
-                        example: '200'
+                        example: '201'
                       },
                       status: {
                         type: 'string',
@@ -126,7 +126,7 @@ export class AuthController {
 
     @Post('/register')
     @ApiOperation({ summary: 'Register to join Apps from this api' })
-    @ApiResponse({ status: 200, schema: {
+    @ApiResponse({ status: 201, schema: {
         type: 'object',
         properties: {
             meta: {
@@ -135,7 +135,7 @@ export class AuthController {
                     code: {
                         type: 'integer',
                         description: 'HTTP Response Status',
-                        example: '200'
+                        example: '201'
                       },
                       status: {
                         type: 'string',
