@@ -194,7 +194,7 @@ export class HistoryController {
         return await this.historyService.analysis(history, res)
     }
 
-    @Get('/inoutcome')
+    @Post('/inoutcome/:id_user/:type')
     @UseGuards(JwtAuthGuard)
     @ApiResponse({ status: 201, schema: {
       type: 'object',
@@ -298,7 +298,7 @@ export class HistoryController {
              }
         },
     } })
-    async inOutCome(@Body() history: IncomeOutcome, @Res() res: Response) {
+    async inOutCome(@Param() history: IncomeOutcome, @Res() res: Response) {
       return await this.historyService.inOutCome(history, res);
     }
 
