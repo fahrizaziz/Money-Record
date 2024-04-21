@@ -1,16 +1,12 @@
 export class InOutComeResponse {
     meta?: Meta;
-    data?: Data;
+    data?: DataInOutCome[];
 }
 
 export class Meta {
     code?: number;
     status?: string;
     message?: string;
-}
-
-export class Data {
-    data?: DataInOutCome[]
 }
 
 export class DataInOutCome {

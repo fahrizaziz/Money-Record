@@ -204,8 +204,7 @@ export class HistoryService {
         responseInOutCome.meta.status = 'Success',
         responseInOutCome.meta.message = 'Data Analisis'
 
-        responseInOutCome.data = {}
-        responseInOutCome.data.data = [
+        responseInOutCome.data = [
             {
                 id_history: inoutCome[0].id_history,
                 id_user: inoutCome[0].id_user,
