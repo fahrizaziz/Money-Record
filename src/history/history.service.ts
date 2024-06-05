@@ -221,8 +221,6 @@ export class HistoryService {
             responseInOutCome.meta.code = 400
             responseInOutCome.meta.status = 'Failed',
             responseInOutCome.meta.message = 'Failed Data Analisis'
-
-            responseInOutCome.data = []
             return res.status(400).send(responseInOutCome)
         }
     }
