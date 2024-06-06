@@ -194,39 +194,46 @@ export class HistoryService {
     async inOutCome(history: IncomeOutcome, @Res() res: Response) {
         const id_user = history.id_user
         const type = history.type
-        // const inoutCome =  await this.historyRepository.find({
-        //     where: { id_user, type },
-        //     order: {date: 'DESC'}
-        // })
-        const query = `SELECT id_history, date, total, type FROM history
-        WHERE
-        id_user='${id_user}' AND type='${type}'
-        ORDER BY date DESC`
-        const inoutCome = await this.historyRepository.query(
-            query
-        );
+        const inoutCome =  await this.historyRepository.find({
+            where: { id_user, type },
+            order: {date: 'DESC'}
+        })
+        // const query = `SELECT id_history, date, total, type FROM history
+        // WHERE
+        // id_user='${id_user}' AND type='${type}'
+        // ORDER BY date DESC`
+        // const inoutCome = await this.historyRepository.query(
+        //     query
+        // );
+        const responseInOutCome: InOutComeResponse = new InOutComeResponse()
+        responseInOutCome.meta = {}
         if (inoutCome.length > 0) {
-            const responseInOutCome: InOutComeResponse = new InOutComeResponse()
-            responseInOutCome.meta = {}
+            
         responseInOutCome.meta.code = 201
         responseInOutCome.meta.status = 'Success',
         responseInOutCome.meta.message = 'Data Analisis'
 
-        responseInOutCome.data = [
-            {
-                id_history: inoutCome[0].id_history,
-                id_user: inoutCome[0].id_user,
-                type: inoutCome[0].type,
-                date: inoutCome[0].date,
-                total: inoutCome[0].total,
-                details: inoutCome[0].details
-            }
-        ]
+        responseInOutCome.data = inoutCome.map(record => ({
+            id_history: record.id_history,
+            id_user: record.id_user,
+            type: record.type,
+            date: record.date,
+            total: record.total,
+            details: record.details,
+        }))
+        // responseInOutCome.data = [
+        //     {
+        //         id_history: inoutCome[0].id_history,
+        //         id_user: inoutCome[0].id_user,
+        //         type: inoutCome[0].type,
+        //         date: inoutCome[0].date,
+        //         total: inoutCome[0].total,
+        //         details: inoutCome[0].details
+        //     }
+        // ]
         
         return res.status(201).send(responseInOutCome)
         } else {
-            const responseInOutCome: InOutComeResponse = new InOutComeResponse()
-            responseInOutCome.meta = {}
             responseInOutCome.meta.code = 400
             responseInOutCome.meta.status = 'Failed',
             responseInOutCome.meta.message = 'Failed Data Analisis'
