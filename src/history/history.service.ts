@@ -194,10 +194,17 @@ export class HistoryService {
     async inOutCome(history: IncomeOutcome, @Res() res: Response) {
         const id_user = history.id_user
         const type = history.type
-        const inoutCome =  await this.historyRepository.find({
-            where: { id_user, type },
-            order: {date: 'DESC'}
-        })
+        // const inoutCome =  await this.historyRepository.find({
+        //     where: { id_user, type },
+        //     order: {date: 'DESC'}
+        // })
+        const query = `SELECT id_history, date, total, type FROM history
+        WHERE
+        id_user='${id_user}' AND type='${type}'
+        ORDER BY date DESC`
+        const inoutCome = await this.historyRepository.query(
+            query
+        );
         if (inoutCome.length > 0) {
             const responseInOutCome: InOutComeResponse = new InOutComeResponse()
             responseInOutCome.meta = {}
