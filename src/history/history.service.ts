@@ -208,7 +208,6 @@ export class HistoryService {
 
         responseInOutCome.data = inoutCome.map(record => ({
             id_history: record.id_history,
-            id_user: record.id_user,
             type: record.type,
             date: record.date,
             total: record.total,
