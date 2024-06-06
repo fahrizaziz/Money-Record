@@ -212,7 +212,6 @@ export class HistoryService {
             type: record.type,
             date: record.date,
             total: record.total,
-            details: record.details,
         }))
         
         return res.status(201).send(responseInOutCome)
@@ -225,6 +224,43 @@ export class HistoryService {
             return res.status(400).send(responseInOutCome)
         }
     }
+
+    async detail(history: IncomeOutcome, @Res() res: Response) {
+        const id_user = history.id_user
+        const type = history.type
+        const date = history.date
+        const inoutCome =  await this.historyRepository.find({
+            where: { id_user, type, date }
+        })
+        const responseInOutCome: InOutComeResponse = new InOutComeResponse()
+        responseInOutCome.meta = {}
+        if (inoutCome.length > 0) {
+            
+        responseInOutCome.meta.code = 201
+        responseInOutCome.meta.status = 'Success',
+        responseInOutCome.meta.message = 'Data Analisis'
+
+        responseInOutCome.data = inoutCome.map(record => ({
+            id_history: record.id_history,
+            id_user: record.id_user,
+            type: record.type,
+            date: record.date,
+            total: record.total,
+            details: record.details
+        }))
+        
+        return res.status(201).send(responseInOutCome)
+        } else {
+            responseInOutCome.meta.code = 400
+            responseInOutCome.meta.status = 'Failed',
+            responseInOutCome.meta.message = 'Failed Data Analisis'
+
+            responseInOutCome.data = [];
+            return res.status(400).send(responseInOutCome)
+        }
+    }
+
+
     
     async inOutComeSearch(history: IncomeOutcome) {
         const id_user = history.id_user

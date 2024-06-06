@@ -302,6 +302,10 @@ export class HistoryController {
       return await this.historyService.inOutCome(history, res);
     }
 
+    async detail(@Param() history: IncomeOutcome, @Res() res: Response) {
+      return await this.historyService.detail(history, res);
+    }
+
     @Post('/searchinoutcome/:id_user/:type/:date')
     @UseGuards(JwtAuthGuard)
     async inOutComeSearch(@Param() history: IncomeOutcome) {
