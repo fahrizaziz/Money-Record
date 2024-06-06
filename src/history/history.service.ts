@@ -198,13 +198,6 @@ export class HistoryService {
             where: { id_user, type },
             order: {date: 'DESC'}
         })
-        // const query = `SELECT id_history, date, total, type FROM history
-        // WHERE
-        // id_user='${id_user}' AND type='${type}'
-        // ORDER BY date DESC`
-        // const inoutCome = await this.historyRepository.query(
-        //     query
-        // );
         const responseInOutCome: InOutComeResponse = new InOutComeResponse()
         responseInOutCome.meta = {}
         if (inoutCome.length > 0) {
@@ -221,16 +214,6 @@ export class HistoryService {
             total: record.total,
             details: record.details,
         }))
-        // responseInOutCome.data = [
-        //     {
-        //         id_history: inoutCome[0].id_history,
-        //         id_user: inoutCome[0].id_user,
-        //         type: inoutCome[0].type,
-        //         date: inoutCome[0].date,
-        //         total: inoutCome[0].total,
-        //         details: inoutCome[0].details
-        //     }
-        // ]
         
         return res.status(201).send(responseInOutCome)
         } else {
@@ -239,8 +222,6 @@ export class HistoryService {
             responseInOutCome.meta.message = 'Failed Data Analisis'
 
             responseInOutCome.data = [];
-            // responseInOutCome.data = {}
-            // responseInOutCome.data.data = []
             return res.status(400).send(responseInOutCome)
         }
     }
