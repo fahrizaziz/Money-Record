@@ -18,8 +18,8 @@ export class History {
     @Column({ type: 'varchar', length: 50 })
     total: string;
 
-    @Column({ type: 'text' })
-    details: string;
+    @Column({ type: 'jsonb', nullable: true })
+    details: any[]; //
 
     @Column({ type: 'timestamp' })
     created_at: string;

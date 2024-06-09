@@ -182,7 +182,7 @@ export class HistoryService {
             type: history.type,
             date: history.date,
             total: history.total,
-            details: history.details,
+            details: [history.details],
             created_at: formattedDate,
             updated_at: formattedDate,
        })
@@ -231,6 +231,12 @@ export class HistoryService {
         const inoutCome =  await this.historyRepository.find({
             where: { id_user, type, date }
         })
+        const inputString = inoutCome.map(record => ({
+            details: record.details
+        }))
+
+
+        console.log('Detail ', inputString)
         const responseInOutCome: InOutComeResponse = new InOutComeResponse()
         responseInOutCome.meta = {}
         if (inoutCome.length > 0) {
@@ -245,10 +251,7 @@ export class HistoryService {
             type: record.type,
             date: record.date,
             total: record.total,
-            details: record.details ? record.details.map(detail => ({
-                name: detail.name,
-                price: detail.price
-            })) : []
+            details: record.details
         }))
         
         return res.status(201).send(responseInOutCome)
@@ -352,7 +355,7 @@ export class HistoryService {
         check.type = history.type
         check.date = history.date
         check.total = history.total
-        check.details = history.details
+        check.details = [history.details]
         check.updated_at = formattedDate
 
         await this.historyRepository.save(check)
