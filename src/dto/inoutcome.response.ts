@@ -15,5 +15,10 @@ export class DataInOutCome {
     type?: string
     date?: string
     total?: string
-    details?: string
+    details?: Detail[]
+}
+
+export class Detail {
+    name?: string
+    price?: string
 }
