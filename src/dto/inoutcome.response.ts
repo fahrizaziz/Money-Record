@@ -19,6 +19,6 @@ export class DataInOutCome {
 }
 
 export class Detail {
-    name?: string
-    price?: string
+    name: string
+    price: string
 }

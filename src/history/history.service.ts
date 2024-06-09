@@ -211,10 +211,6 @@ export class HistoryService {
             type: record.type,
             date: record.date,
             total: record.total,
-            details: record.details.map(detail => ({
-                name: detail.name,
-                price: detail.price
-            }))
         }))
         
         return res.status(201).send(responseInOutCome)
@@ -249,10 +245,10 @@ export class HistoryService {
             type: record.type,
             date: record.date,
             total: record.total,
-            details: record.details.map(detail => ({
+            details: record.details ? record.details.map(detail => ({
                 name: detail.name,
                 price: detail.price
-            }))
+            })) : []
         }))
         
         return res.status(201).send(responseInOutCome)
